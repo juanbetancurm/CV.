@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan José Betancur Muñoz - Software Developer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #3c4650;
+            --secondary-dark: #495057;
+            --accent-blue: #4a90e2;
+            --text-light: #ffffff;
+            --text-muted: #e9ecef;
+            --text-dark: #333333;
+            --text-secondary: #6c757d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f0f2f5;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-white);
+            border-radius: 25px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .lang-option {
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lang-option.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .lang-option:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: var(--bg-white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 0;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            background: var(--primary-dark);
+            color: var(--text-light);
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            background: #f0f0f0;
+            overflow: hidden;
+            border: 4px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        .title {
+            font-size: 1rem;
+            color: var(--accent-blue);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-item i {
+            width: 20px;
+            color: var(--accent-blue);
+            margin-right: 12px;
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .skills-list li::before {
+            content: '◦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .languages-list {
+            list-style: none;
+        }
+
+        .languages-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .language-level {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .hobbies-list {
+            list-style: none;
+        }
+
+        .hobbies-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .hobbies-list li::before {
+            content: '◦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            background: var(--bg-white);
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            text-align: justify;
+        }
+
+        .work-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 25px;
+        }
+
+        .work-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .work-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+        }
+
+        .work-company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .work-date {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .work-description {
+            list-style: none;
+        }
+
+        .work-description li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            position: relative;
+            padding-left: 15px;
+            line-height: 1.5;
+        }
+
+        .work-description li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .education-item {
+            margin-bottom: 25px;
+        }
+
+        .education-degree {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .education-date {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .education-school {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .project-item {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            background: var(--accent-blue);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .language-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+            }
+
+            .container {
+                margin: 10px;
+                grid-template-columns: 1fr;
+                max-width: none;
+            }
+
+            .sidebar {
+                padding: 30px 20px;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .work-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .work-date {
+                margin-top: 5px;
+            }
+
+            .name {
+                font-size: 1.5rem;
+            }
+
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-toggle" onclick="toggleLanguage()">
+        <div class="lang-option" id="lang-en">EN</div>
+        <div class="lang-option active" id="lang-es">ES</div>
+    </div>
+
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <div class="profile-photo">
+                    <img id="profileImage" src="https://res.cloudinary.com/demo/image/upload/c_fill,w_150,h_150,g_face/placeholder.jpg" 
+                         alt="Juan José Betancur Muñoz" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-photo-placeholder" style="display: none;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <h1 class="name">Juan José Betancur Muñoz</h1>
+                <p class="title" data-en="Software Developer" data-es="Desarrollador de Software">Desarrollador de Software</p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title" data-en="CONTACT" data-es="CONTACTO">CONTACTO</h3>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+57 300 814 0599</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>juan.jbetancur852@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Medellín, Antioquia, Colombia</span>
+                </div> 
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title" data-en="SKILLS" data-es="HABILIDADES">HABILIDADES</h3>
+                <ul class="skills-list">
+                    <li>Java</li>
+                    <li>JavaScript</li>
+                    <li>Spring Boot</li>
+                    <li>React</li>
+                    <li>SQL / MySQL</li>
+                    <li data-en="RESTful APIs" data-es="APIs RESTful">APIs RESTful</li>
+                    <li data-en="Microservices" data-es="Microservicios">Microservicios</li>
+                    <li data-en="JWT Authentication" data-es="Autenticación JWT">Autenticación JWT</li>
+                    <li data-en="Hexagonal Architecture" data-es="Arquitectura Hexagonal">Arquitectura Hexagonal</li>
+                    <li>Git / GitHub</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title" data-en="LANGUAGES" data-es="IDIOMAS">IDIOMAS</h3>
+                <ul class="languages-list">
+                    <li>
+                        <span data-en="Spanish" data-es="Español">Español</span>
+                        <span class="language-level" data-en="Native" data-es="Nativo">Nativo</span>
+                    </li>
+                    <li>
+                        <span data-en="English" data-es="Inglés">Inglés</span>
+                        <span class="language-level">IELTS C1</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title" data-en="INTERESTS" data-es="INTERESES">INTERESES</h3>
+                <ul class="hobbies-list">
+                    <li data-en="Fitness Training" data-es="Entrenamiento Físico">Entrenamiento Físico</li>
+                    <li data-en="Mathematics" data-es="Matemáticas">Matemáticas</li>
+                    <li data-en="History" data-es="Historia">Historia</li>
+                    <li data-en="Technology Trends" data-es="Tendencias Tecnológicas">Tendencias Tecnológicas</li>
+                    <li data-en="Problem Solving" data-es="Resolución de Problemas">Resolución de Problemas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-section">
+                <h2 class="content-title" data-en="PROFILE" data-es="PERFIL">PERFIL</h2>
+                <p class="profile-text" data-en="I am a future software developer and SENA graduate student with strong experience in full-stack development using modern technologies. I have demonstrated expertise in building scalable applications with Java Spring Boot and React, implementing microservices architecture with clean code principles. My technical skills are complemented by advanced English proficiency (IELTS C1) and strong analytical thinking capabilities developed through my mathematical background. I am passionate about creating efficient, user-centered solutions and thrive in collaborative development environments." data-es="Soy un futuro desarrollador de software y estudiante graduando del SENA con sólida experiencia en desarrollo full-stack utilizando tecnologías modernas. He demostrado experiencia en la construcción de aplicaciones escalables con Java Spring Boot y React, implementando arquitectura de microservicios con principios de código limpio. Mis habilidades técnicas se complementan con competencia avanzada en inglés (IELTS C1) y sólidas capacidades de pensamiento analítico desarrolladas a través de mi formación matemática. Me apasiona crear soluciones eficientes centradas en el usuario y prospero en entornos de desarrollo colaborativo.">
+                    Soy un futuro desarrollador de software y estudiante graduando del SENA con sólida experiencia en desarrollo full-stack utilizando tecnologías modernas. He demostrado experiencia en la construcción de aplicaciones escalables con Java Spring Boot y React, implementando arquitectura de microservicios con principios de código limpio. Mis habilidades técnicas se complementan con competencia avanzada en inglés (IELTS C1) y sólidas capacidades de pensamiento analítico desarrolladas a través de mi formación matemática. Me apasiona crear soluciones eficientes centradas en el usuario y prospero en entornos de desarrollo colaborativo.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="content-title" data-en="PROJECT EXPERIENCE" data-es="EXPERIENCIA EN PROYECTOS">EXPERIENCIA EN PROYECTOS</h2>
+                
+                <div class="work-item">
+                    <div class="work-header">
+                        <div>
+                            <div class="work-title" data-en="Full-Stack Developer - Rock & Burger POS System" data-es="Desarrollador Full-Stack - Sistema POS Rock & Burger">Desarrollador Full-Stack - Sistema POS Rock & Burger</div>
+                            <div class="work-company" data-en="Academic Project - SENA" data-es="Proyecto Académico - SENA">Proyecto Académico - SENA</div>
+                        </div>
+                        <div class="work-date" data-en="2024 - Present" data-es="2024 - Presente">2024 - Presente</div>
+                    </div>
+                    <ul class="work-description">
+                        <li data-en="Developed a comprehensive Point of Sale and Restaurant Management System using microservices architecture with Spring Boot and React" data-es="Desarrollé un sistema integral de Punto de Venta y Gestión de Restaurante utilizando arquitectura de microservicios con Spring Boot y React">Desarrollé un sistema integral de Punto de Venta y Gestión de Restaurante utilizando arquitectura de microservicios con Spring Boot y React</li>
+                        <li data-en="Implemented hexagonal architecture with clean separation of concerns for scalable and maintainable code" data-es="Implementé arquitectura hexagonal con separación limpia de responsabilidades para código escalable y mantenible">Implementé arquitectura hexagonal con separación limpia de responsabilidades para código escalable y mantenible</li>
+                        <li data-en="Built RESTful APIs with JWT authentication and CORS configuration for secure cross-service communication" data-es="Construí APIs RESTful con autenticación JWT y configuración CORS para comunicación segura entre servicios">Construí APIs RESTful con autenticación JWT y configuración CORS para comunicación segura entre servicios</li>
+                        <li data-en="Designed responsive React frontend with real-time cart management and role-based dashboard interfaces" data-es="Diseñé frontend responsivo en React con gestión de carrito en tiempo real e interfaces de dashboard basadas en roles">Diseñé frontend responsivo en React con gestión de carrito en tiempo real e interfaces de dashboard basadas en roles</li>
+                        <li data-en="Integrated MySQL database with JPA/Hibernate for robust data persistence and integrity" data-es="Integré base de datos MySQL con JPA/Hibernate para persistencia e integridad robusta de datos">Integré base de datos MySQL con JPA/Hibernate para persistencia e integridad robusta de datos</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Spring Boot</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">JWT</span>
+                        <span class="tech-tag" data-en="Microservices" data-es="Microservicios">Microservicios</span>
+                    </div>
+                </div>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <div>
+                            <div class="work-title" data-en="Software Development Student Projects" data-es="Proyectos de Estudiante de Desarrollo de Software">Proyectos de Estudiante de Desarrollo de Software</div>
+                            <div class="work-company">SENA</div>
+                        </div>
+                        <div class="work-date" data-en="2023 - 2024" data-es="2023 - 2024">2023 - 2024</div>
+                    </div>
+                    <ul class="work-description">
+                        <li data-en="Completed various full-stack development projects focusing on web application development" data-es="Completé varios proyectos de desarrollo full-stack enfocados en el desarrollo de aplicaciones web">Completé varios proyectos de desarrollo full-stack enfocados en el desarrollo de aplicaciones web</li>
+                        <li data-en="Practiced agile development methodologies and collaborative programming techniques" data-es="Practiqué metodologías de desarrollo ágil y técnicas de programación colaborativa">Practiqué metodologías de desarrollo ágil y técnicas de programación colaborativa</li>
+                        <li data-en="Gained experience in database design, API development, and modern frontend frameworks" data-es="Adquirí experiencia en diseño de bases de datos, desarrollo de APIs y frameworks frontend modernos">Adquirí experiencia en diseño de bases de datos, desarrollo de APIs y frameworks frontend modernos</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">HTML/CSS</span>
+                        <span class="tech-tag">SQL</span>
+                        <span class="tech-tag">Git</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="content-title" data-en="EDUCATION" data-es="EDUCACIÓN">EDUCACIÓN</h2>
+                
+                <div class="education-item">
+                    <div class="education-degree" data-en="Technologist in Analysis and Software Development" data-es="Tecnólogo en Análisis y Desarrollo de Software">Tecnólogo en Análisis y Desarrollo de Software</div>
+                    <div class="education-date" data-en="2023 - 2025 (Expected)" data-es="2023 - 2025 (Esperado)">2023 - 2025 (Esperado)</div>
+                    <div class="education-school">SENA - Servicio Nacional de Aprendizaje, Medellín</div>
+                </div>
+
+                <div class="education-item">
+                    <div class="education-degree" data-en="IELTS Academic - Level C1" data-es="IELTS Académico - Nivel C1">IELTS Académico - Nivel C1</div>
+                    <div class="education-date">2024</div>
+                    <div class="education-school" data-en="International English Language Testing System" data-es="Sistema Internacional de Evaluación del Idioma Inglés">Sistema Internacional de Evaluación del Idioma Inglés</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="content-title" data-en="TECHNICAL ACHIEVEMENTS" data-es="LOGROS TÉCNICOS">LOGROS TÉCNICOS</h2>
+                
+                <div class="project-item">
+                    <div class="project-title" data-en="Microservices Architecture Implementation" data-es="Implementación de Arquitectura de Microservicios">Implementación de Arquitectura de Microservicios</div>
+                    <div class="project-description" data-en="Successfully designed and implemented a distributed system with multiple microservices communicating through REST APIs, demonstrating advanced understanding of modern software architecture patterns." data-es="Diseñé e implementé exitosamente un sistema distribuido con múltiples microservicios comunicándose a través de APIs REST, demostrando comprensión avanzada de patrones de arquitectura de software modernos.">
+                        Diseñé e implementé exitosamente un sistema distribuido con múltiples microservicios comunicándose a través de APIs REST, demostrando comprensión avanzada de patrones de arquitectura de software modernos.
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-title" data-en="Full-Stack Development Proficiency" data-es="Competencia en Desarrollo Full-Stack">Competencia en Desarrollo Full-Stack</div>
+                    <div class="project-description" data-en="Demonstrated ability to develop complete web applications from database design to user interface implementation, showcasing versatility across the entire development stack." data-es="Demostré la capacidad de desarrollar aplicaciones web completas desde el diseño de la base de datos hasta la implementación de la interfaz de usuario, mostrando versatilidad en todo el stack de desarrollo.">
+                        Demostré la capacidad de desarrollar aplicaciones web completas desde el diseño de la base de datos hasta la implementación de la interfaz de usuario, mostrando versatilidad en todo el stack de desarrollo.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'es';
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'es' : 'en';
+            
+            // Update active language indicator
+            document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
+            document.getElementById('lang-es').classList.toggle('active', currentLanguage === 'es');
+            
+            // Update all translatable elements
+            const elements = document.querySelectorAll('[data-en]');
+            elements.forEach(element => {
+                const translation = element.getAttribute(`data-${currentLanguage}`);
+                if (translation) {
+                    element.textContent = translation;
+                }
+            });
+            
+            // Update document language
+            document.documentElement.lang = currentLanguage;
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default to Spanish
+            toggleLanguage();
+            toggleLanguage();
+
+            updateProfileImage('https://res.cloudinary.com/dktlpxew2/image/upload/v1758336894/images/012_lciuou.jpg');
+        });
+
+        // Function to update Cloudinary image URL
+        function updateProfileImage(cloudinaryUrl) {
+            const img = document.getElementById('profileImage');
+            img.src = cloudinaryUrl;
+        }
+
+    </script>
+</body>
+</html>
